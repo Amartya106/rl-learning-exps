@@ -1,4 +1,4 @@
-# RL Learning Experiements
+# RL Learning Experiments
 
 This repository documents my journey into **Reinforcement Learning (RL)**, starting from basic control problems and progressing toward robotics and manipulation.
 
