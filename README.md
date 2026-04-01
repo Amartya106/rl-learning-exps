@@ -48,6 +48,10 @@ pip install -r requirements.txt
 
 ## 📊 Results
 
-*(Will add training plots and videos here)*
+###  CartPole DQN Training
+
+Below is the reward progression and moving average over episodes:
+
+![Training Plot](results/training_plot_cp.png)
 
 ---
