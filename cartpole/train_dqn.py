@@ -6,20 +6,24 @@ from common.replay_buffer import ReplayBuffer
 import random
 import numpy as np
 
-env = gym.make("CartPole-v1", render_mode = 'human')
+env = gym.make("CartPole-v1")
 
 model = DQN()
+target_model = DQN()
+target_model.load_state_dict(model.state_dict())
+target_model.eval()
 
 optimizer = optim.Adam(model.parameters(), lr = 1e-3)
 loss_fn = torch.nn.MSELoss()
 gamma = 0.99
 
 buffer = ReplayBuffer(10000)
-epsilon = 0.99
+epsilon = 1
 decay_factor = 0.995
-min_epsilon = 0.5
+min_epsilon = 0.01
 
-episode_num = 200
+episode_num = 500
+
 
 #Training Loop
 for episode in range(episode_num):
@@ -58,7 +62,7 @@ for episode in range(episode_num):
             q_values = q_values.gather(1, actions.unsqueeze(1)).squeeze()
 
             with torch.no_grad():
-                next_q_values = model(next_states).max(1)[0]
+                next_q_values = target_model(next_states).max(1)[0]
                 targets = rewards + gamma* next_q_values * (1-dones)
             
             loss = loss_fn(q_values, targets)
@@ -68,8 +72,12 @@ for episode in range(episode_num):
             loss.backward()
             optimizer.step()
         
+
         if done_flag:
             break
+    
+    if episode%10 == 0:
+        target_model.load_state_dict(model.state_dict())
 
     epsilon = max(min_epsilon, epsilon*decay_factor)
 
