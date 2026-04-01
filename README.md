@@ -18,7 +18,7 @@ This repository documents my journey into **Reinforcement Learning (RL)**, start
 
 * Random agent
 * Rule-based controller
-* (Next: DQN)
+* DQN
 
 ### LunarLander
 
